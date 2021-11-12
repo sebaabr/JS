@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <title>Weight Converter</title>
+    <style>
+      body {
+        margin-top: 70px;
+        background: #333;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="form-row">
+        <div class="col-md-6 offset-md-3">
+          <h1 class="display-4 text-center mb-3">Weight Converter</h1>
+          <form>
+            <div class="form-group">
+              <input
+                type="number"
+                id="input"
+                class="form-control form-control-lg"
+                placeholder="Enter Pounds..."
+              />
+            </div>
+            <div class="form-group">
+              <select id="select" class="custom-select-lg">
+                <option selected>Pounds</option>
+                <option value="Grams">Grams</option>
+                <option value="Kilograms">Kilograms</option>
+                <option value="Ounces">Ounces</option>
+              </select>
+            </div>
+          </form>
+
+          <div id="output" style="visibility: hidden">
+            <div class="card bg-primary mb-2">
+              <div class="card-body">
+                <h4>Grams:</h4>
+                <div id="card-1"></div>
+              </div>
+            </div>
+
+            <div class="card bg-success mb-2">
+              <div class="card-body">
+                <h4>Kilograms:</h4>
+                <div id="card-2"></div>
+              </div>
+            </div>
+
+            <div class="card bg-danger mb-2">
+              <div class="card-body">
+                <h4>Ounces:</h4>
+                <div id="card-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const cards = document.getElementById("output");
+      const input = document.getElementById("input");
+      const sel = document.getElementById("select");
+      const cardBody = document.querySelectorAll(".card-body");
+      const valC1 = document.getElementById("card-1");
+      const valC2 = document.getElementById("card-2");
+      const valC3 = document.getElementById("card-3");
+      //   cardBody[0].children[0].innerHTML = "test";
+
+      let pounds = input.value;
+      let grams;
+      let kg;
+      let oz;
+
+      sel.addEventListener("change", function (e) {
+        input.placeholder = `Enter ${e.target.value}...`;
+        // input.value = "";
+        calc();
+
+        // console.log(e.target.value);
+      });
+
+      calc = function () {
+        if (sel.value === "Pounds") {
+          pounds = input.value;
+          grams = (pounds / 0.022046).toFixed(3);
+          kg = (pounds / 2.2046).toFixed(3);
+          oz = pounds * 16;
+          //   console.log(cardBody[0].children[0]);
+          cardBody[0].children[0].innerHTML = "Grams";
+          valC1.innerHTML = grams;
+          cardBody[1].children[0].innerHTML = "Kilograms";
+          valC2.innerText = numberWithCommas(kg);
+          cardBody[2].children[0].innerHTML = "Ounces";
+          valC3.innerText = numberWithCommas(oz);
+        }
+        if (sel.value === "Grams") {
+          grams = input.value;
+          pounds = (grams * 0.225).toFixed(2);
+          kg = grams / 1000;
+          oz = (grams * 0.0353).toFixed(2);
+
+          cardBody[0].children[0].innerHTML = "Pounds";
+          valC1.innerHTML = numberWithCommas(pounds);
+          cardBody[1].children[0].innerHTML = "Kilograms";
+          valC2.innerText = numberWithCommas(kg);
+          cardBody[2].children[0].innerHTML = "Ounces";
+          valC3.innerText = numberWithCommas(oz);
+        }
+        if (sel.value === "Kilograms") {
+          kg = input.value;
+          pounds = (kg * 2.2046).toFixed(2);
+          grams = kg * 1000;
+          oz = (kg * 35.27).toFixed(2);
+
+          cardBody[0].children[0].innerHTML = "Grams";
+          valC1.innerHTML = numberWithCommas(grams);
+          cardBody[1].children[0].innerHTML = "Pounds";
+          valC2.innerText = numberWithCommas(pounds);
+          cardBody[2].children[0].innerHTML = "Ounces";
+          valC3.innerText = numberWithCommas(oz);
+        }
+        if (sel.value === "Ounces") {
+          oz = input.value;
+          kg = (oz * 0.02834).toFixed(2);
+          grams = (oz * 28.34).toFixed(2);
+          pounds = (oz * 0.0625).toFixed(2);
+
+          cardBody[0].children[0].innerHTML = "Grams";
+          valC1.innerHTML = numberWithCommas(grams);
+          cardBody[1].children[0].innerHTML = "Kilograms";
+          valC2.innerText = numberWithCommas(kg);
+          cardBody[2].children[0].innerHTML = "Pounds";
+          valC3.innerText = numberWithCommas(pounds);
+        }
+
+        // console.log(
+        //   numberWithCommas(pounds),
+        //   numberWithCommas(grams),
+        //   numberWithCommas(kg),
+        //   numberWithCommas(oz)
+        // );
+      };
+
+      function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      input.addEventListener("input", function (e) {
+        calc();
+        let val = e.target.value;
+
+        cards.style.visibility = "visible";
+
+        if (val === "" || val == 0) {
+          cards.style.visibility = "hidden";
+        }
+      });
+    </script>
+  </body>
+</html>
